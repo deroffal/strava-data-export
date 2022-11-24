@@ -1,0 +1,26 @@
+{
+  "name": "strava-data-export",
+  "version": "1.0.0",
+  "description": "Export data from Strava API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deroffal/strava-data-export.git"
+  },
+  "keywords": [
+    "strava"
+  ],
+  "author": "deroffal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deroffal/strava-data-export/issues"
+  },
+  "homepage": "https://github.com/deroffal/strava-data-export#readme",
+  "dependencies": {
+    "https-proxy-agent": "^5.0.1",
+    "swagger-client": "^3.18.5"
+  }
+}
