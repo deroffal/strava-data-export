@@ -1,3 +1,14 @@
+const yargs = require('yargs/yargs')
+const {hideBin} = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv))
+    .usage('Usage: $0 [options]')
+    .alias('t', 'target')
+    .nargs('t', 1)
+    .describe('t', 'target directory for exported data')
+    .demandOption(['t'])
+    .argv;
+
+
 function getToken() {
     let token = process.env['STRAVA_ACCESS_TOKEN']
     if (!token) {
@@ -7,12 +18,7 @@ function getToken() {
 }
 
 function getResourcesDirectory() {
-    let resourcesDirectory = process.env['RESOURCES_DIRECTORY']
-    if (!resourcesDirectory) {
-        resourcesDirectory = 'data/2022'
-        console.warn(`No resources directory defined. Using default : ${resourcesDirectory}`)
-    }
-    return resourcesDirectory
+    return argv.target
 }
 
 module.exports = {getToken, getResourcesDirectory}
