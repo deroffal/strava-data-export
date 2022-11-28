@@ -1,5 +1,4 @@
-const SwaggerClient = require('swagger-client');
-
+const Swagger = require('swagger-client');
 
 class SwaggerApi {
     constructor(token) {
@@ -10,14 +9,14 @@ class SwaggerApi {
         const requestInterceptor = (request) => {
             let proxy = process.env['HTTP_PROXY'];
             if(proxy){
-                const HttpsProxyAgent = require('https-proxy-agent')
+                const HttpsProxyAgent = require('https-proxy-agent');
                 request.agent = new HttpsProxyAgent(proxy)
             }
             request.headers["Authorization"] = `Bearer ${this.token}`
             return request;
         };
 
-        let client = await new SwaggerClient({
+        let client = await Swagger({
             url: 'https://developers.strava.com/swagger/swagger.json',
             requestInterceptor
         });

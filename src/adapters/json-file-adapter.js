@@ -22,7 +22,7 @@ async function writeFile(jsons, fileName) {
 
     }
     let file = `${directory}/${fileName.substring(fileName.lastIndexOf("/") + 1)}`
-    await fs.promises.writeFile(file, JSON.stringify(jsons), {flag: 'w'})
+    return fs.promises.writeFile(file, JSON.stringify(jsons), {flag: 'w'})
 }
 
 module.exports = {readFile, writeFile}
