@@ -1,5 +1,5 @@
 const fs = require("fs")
-const env = require("./env");
+const env = require("../env");
 
 const resourcesDirectory = env.getResourcesDirectory()
 

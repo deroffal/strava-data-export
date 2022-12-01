@@ -1,33 +1,40 @@
-const {createStravaApiClient} = require("./adapters/strava-api-adapter");
-const repository = require("./adapters/strava-repository-adapter");
-const env = require("./adapters/env");
+const {createStravaClient} = require("./api/strava-api");
+const repository = require("./repository/mongo-repository");
 
 (async () => {
     console.info("start...")
-    let startDate = await repository.getLastRecordedActivityDate();
+    let stravaClient = await createStravaClient()
 
-    let client = await getStravaApiClient();
-    let newActivities = await client.getLoggedInAthleteActivities(startDate)
-    if (newActivities.length > 0) {
+    await repository.getLastRecordedActivityDate()
+        .then(startDate => stravaClient.getLoggedInAthleteActivities(startDate))
+        .then(saveNewActivities)
 
-        // FIXME synchronous to avoid "too many request" error to de-synchronize athlete_activities.json and activites/*
-        for (const newActivity of newActivities) {
-            await repository.addNewAthleteActivities(newActivity)
-                .then(activity => client.getActivityById(activity.id), activity => {
-                    repository.removeAthleteActivities(activity.id);
-                })
-                .then(repository.addNewActivity)
+    function saveNewActivities(newAthleteActivities) {
+        if (newAthleteActivities.length > 0) {
+            let promises = newAthleteActivities.map(fetchActivityData)
+            return Promise.all(promises)
+        } else {
+            console.info("No new activity.")
+            return Promise.resolve();
         }
-
-    } else {
-        console.info("No new activity.")
     }
+
+    function fetchActivityData(newAthleteActivity) {
+        return repository.addNewAthleteActivities(newAthleteActivity)
+            .then(athleteActivity => stravaClient.getActivityById(athleteActivity.id))
+            .then(activity => repository.addNewActivity(activity))
+            .catch(err => {
+                console.error("Error : " + err)
+                repository.removeAthleteActivities(newAthleteActivity.id)
+            })
+
+    }
+
     console.info("end...")
+    process.exit(0)
 })()
 
-async function getStravaApiClient() {
-    let token = env.getToken();
-    return createStravaApiClient(token);
-}
+
+
 
 

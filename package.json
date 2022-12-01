@@ -21,6 +21,7 @@
   "homepage": "https://github.com/deroffal/strava-data-export#readme",
   "dependencies": {
     "https-proxy-agent": "^5.0.1",
+    "mongoose": "^6.7.3",
     "swagger-client": "^3.18.5"
   }
 }
