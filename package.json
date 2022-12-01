@@ -4,7 +4,8 @@
   "description": "Export data from Strava API",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "build": "esbuild src/index.js --bundle --platform=node --outfile=dist/out.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/deroffal/strava-data-export#readme",
   "dependencies": {
+    "esbuild": "^0.15.16",
     "https-proxy-agent": "^5.0.1",
     "swagger-client": "^3.18.5"
   }
